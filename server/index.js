@@ -6,6 +6,7 @@ import fs from "fs";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import accountRoutes from "./routes/accountRoutes.js";
+import { connectDB } from "./dal.js";
 
 // Resolve directory name in ES module scope
 const __filename = fileURLToPath(import.meta.url);
@@ -50,6 +51,9 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-app.listen(port_server, () => {
-  console.log(`Running on port: ${port_server}`);
+// Connect to MongoDB and start the server
+connectDB().then(() => {
+  app.listen(port_server, () => {
+    console.log(`Running on port: ${port_server}`);
+  });
 });
