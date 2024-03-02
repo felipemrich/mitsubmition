@@ -1,104 +1,112 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ServerApiVersion } from "mongodb";
+import dotenv from "dotenv";
 
-const url =
-  "mongodb+srv://felipeemrichdearaujo:dwWlvVBNjBVDISHg@cluster0.wdpeh8b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// Load environment variables
+dotenv.config();
+
+const url = process.env.MONGODB_URI;
 let db = null;
+let client = null;
 
 // Function to establish a database connection
 const connectDB = async () => {
   try {
-    const client = await MongoClient.connect(url, { useUnifiedTopology: true });
+    client = new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverApi: ServerApiVersion.v1,
+    });
+    await client.connect();
     console.log("Connected successfully to db server");
-    db = client.db("MyProject");
+    // Specify the name of your database
+    db = client.db("myproject2");
   } catch (err) {
     console.error("Error connecting to the database:", err);
-    throw err; // Rethrow the error to handle it in the calling code
+    process.exit(1);
   }
 };
 
-// Connect to the database before exporting functions
-connectDB();
+// Immediately invoke the connectDB function to ensure the database connection is established
+connectDB().catch(console.dir);
 
-// create user account
-function create(name, email, password) {
-  return new Promise((resolve, reject) => {
+// Database operation functions
+const create = async (name, email, password) => {
+  try {
     const collection = db.collection("users");
     const doc = { name, email, password, balance: 0 };
-    collection
-      .insertOne(doc, { w: 1 })
-      .then((result) => resolve(doc))
-      .catch((err) => reject(err));
-  });
-}
+    await collection.insertOne(doc);
+    return { success: true, user: doc };
+  } catch (err) {
+    console.error("Error creating user:", err);
+    return { success: false, message: "Failed to create user" };
+  }
+};
 
-// find user account
-function find(email) {
-  return db.collection("users").find({ email: email }).toArray();
-}
+const find = async (email) => {
+  return await db.collection("users").find({ email }).toArray();
+};
 
-// find one user account
-function findOne(email) {
-  return db.collection("users").findOne({ email: email });
-}
+const findOne = async (email) => {
+  return await db.collection("users").findOne({ email });
+};
 
-// update - deposit/withdraw amount
-function update(email, amount) {
-  const numericAmount = parseFloat(amount); // Ensure amount is a number
-  return db
+const update = async (email, amount) => {
+  const numericAmount = parseFloat(amount);
+  return await db
     .collection("users")
     .findOneAndUpdate(
-      { email: email },
+      { email },
       { $inc: { balance: numericAmount } },
       { returnDocument: "after" }
     );
-}
+};
 
-// get all users
-function all() {
-  return db.collection("users").find({}).toArray();
-}
+const all = async () => {
+  return await db.collection("users").find({}).toArray();
+};
 
-// Get user balance
-function getBalance(email) {
-  return db
-    .collection("users")
-    .findOne({ email: email })
-    .then((user) => {
-      if (user) {
-        return { success: true, balance: user.balance };
-      } else {
-        return { success: false, message: "User not found" };
-      }
-    })
-    .catch((err) => {
-      console.error("Error getting balance:", err);
-      throw err;
-    });
-}
+const getBalance = async (email) => {
+  try {
+    const user = await findOne(email);
+    if (user) {
+      return { success: true, balance: user.balance };
+    } else {
+      return { success: false, message: "User not found" };
+    }
+  } catch (err) {
+    console.error("Error getting balance:", err);
+    return { success: false, message: "Failed to get balance" };
+  }
+};
 
-function transfer(senderEmail, recipientEmail, amount) {
+const transfer = async (senderEmail, recipientEmail, amount) => {
   const numericAmount = parseFloat(amount);
-
-  // Update sender's balance (subtract)
-  return db
-    .collection("users")
-    .updateOne({ email: senderEmail }, { $inc: { balance: -numericAmount } })
-    .then(() => {
-      // Update recipient's balance (add)
-      return db
-        .collection("users")
-        .updateOne(
-          { email: recipientEmail },
-          { $inc: { balance: numericAmount } }
-        );
-    })
-    .then(() => {
-      return { success: true, message: "Transaction successful." };
-    })
-    .catch((error) => {
-      console.error("Error during transfer:", error);
-      return { success: false, message: "Transaction failed: Internal error." };
-    });
-}
+  const session = client.startSession();
+  try {
+    session.startTransaction();
+    await db
+      .collection("users")
+      .updateOne(
+        { email: senderEmail },
+        { $inc: { balance: -numericAmount } },
+        { session }
+      );
+    await db
+      .collection("users")
+      .updateOne(
+        { email: recipientEmail },
+        { $inc: { balance: numericAmount } },
+        { session }
+      );
+    await session.commitTransaction();
+    return { success: true, message: "Transaction successful." };
+  } catch (error) {
+    await session.abortTransaction();
+    console.error("Error during transfer:", error);
+    return { success: false, message: "Transaction failed: Internal error." };
+  } finally {
+    session.endSession();
+  }
+};
 
 export { create, findOne, find, update, all, getBalance, transfer };
