@@ -19,7 +19,7 @@ function Sidebar() {
     const userEmail = localStorage.getItem("userEmail");
     if (userEmail) {
       fetch(
-        `https://walrus-app-cb2fc.ondigitalocean.app/account/find/${encodeURIComponent(
+        `https://felipe-leaofullstackbankingapplication.com/account/find/${encodeURIComponent(
           userEmail
         )}`
       )

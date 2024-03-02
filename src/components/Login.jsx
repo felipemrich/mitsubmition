@@ -11,7 +11,7 @@ function Login(props) {
 
   const handleLogin = async () => {
     try {
-      const url = `https://walrus-app-cb2fc.ondigitalocean.app/account/login/${encodeURIComponent(
+      const url = `https://felipe-leaofullstackbankingapplication.com/account/login/${encodeURIComponent(
         email
       )}/${encodeURIComponent(password)}`;
       const res = await fetch(url, {

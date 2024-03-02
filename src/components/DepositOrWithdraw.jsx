@@ -19,7 +19,7 @@ function Transaction() {
     const userEmail = localStorage.getItem("userEmail");
     if (userEmail) {
       fetch(
-        `https://walrus-app-cb2fc.ondigitalocean.app/account/balance/${encodeURIComponent(
+        `https://felipe-leaofullstackbankingapplication.com/account/balance/${encodeURIComponent(
           userEmail
         )}`
       )
@@ -67,7 +67,7 @@ function Transaction() {
       transactionAmount = -transactionAmount; // Make the amount negative for withdrawal
     }
     const encodedEmail = encodeURIComponent(userEmail);
-    const url = `https://walrus-app-cb2fc.ondigitalocean.app/account/update/${encodedEmail}/${transactionAmount}`;
+    const url = `https://felipe-leaofullstackbankingapplication.com/account/update/${encodedEmail}/${transactionAmount}`;
 
     fetch(url)
       .then((response) => response.json())

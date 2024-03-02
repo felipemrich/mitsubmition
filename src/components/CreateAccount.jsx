@@ -10,7 +10,7 @@ function CreateAccount() {
 
   const handleCreateAccount = async () => {
     try {
-      const url = `https://walrus-app-cb2fc.ondigitalocean.app/account/create/${name}/${email}/${password}`;
+      const url = `https://felipe-leaofullstackbankingapplication.com/account/create/${name}/${email}/${password}`;
       const res = await fetch(url);
       const data = await res.json();
 

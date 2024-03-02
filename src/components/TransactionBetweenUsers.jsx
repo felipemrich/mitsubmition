@@ -14,7 +14,7 @@ function TransferFunds() {
     const userEmailFromLocalStorage = localStorage.getItem("userEmail");
     if (userEmailFromLocalStorage) {
       fetch(
-        `https://walrus-app-cb2fc.ondigitalocean.app/account/balance/${encodeURIComponent(
+        `https://felipe-leaofullstackbankingapplication.com/account/balance/${encodeURIComponent(
           userEmailFromLocalStorage
         )}`
       )
@@ -43,7 +43,7 @@ function TransferFunds() {
       setUserEmail(userEmailFromLocalStorage);
 
       fetch(
-        `https://walrus-app-cb2fc.ondigitalocean.app/account/balance/${encodeURIComponent(
+        `https://felipe-leaofullstackbankingapplication.com/account/balance/${encodeURIComponent(
           userEmailFromLocalStorage
         )}`
       )
@@ -76,7 +76,7 @@ function TransferFunds() {
   const handleTransfer = () => {
     if (balance >= parseFloat(amount)) {
       fetch(
-        `https://walrus-app-cb2fc.ondigitalocean.app/account/transfer/${localStorage.getItem(
+        `https://felipe-leaofullstackbankingapplication.com/account/transfer/${localStorage.getItem(
           "userEmail"
         )}/${recipientEmail}/${amount}`
       )
