@@ -26,11 +26,11 @@
     "yamljs": "^0.3.0"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node server/index.js",
     "client": "react-scripts start",
-    "build": "npm run build-client",
-    "build-client": "react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

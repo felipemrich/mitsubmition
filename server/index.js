@@ -21,7 +21,7 @@ const app = express();
 const port_server = process.env.PORT || 4000; // Default port to 4000 if PORT env var is not set
 
 app.use(cors()); // Use CORS with the specified options
-app.use(express.static(join(__dirname, "build"))); // Adjust static middleware to serve from the build path
+app.use(express.static(join(__dirname, "../build"))); // Adjust static middleware to serve from the build path
 
 // Serve Swagger documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -47,8 +47,13 @@ app.use((err, req, res, next) => {
 });
 
 // Connect to MongoDB and start the server
-connectDB().then(() => {
-  app.listen(port_server, () => {
-    console.log(`Running on port: ${port_server}`);
+connectDB()
+  .then(() => {
+    app.listen(port_server, () => {
+      console.log(`Running on port: ${port_server}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Database connection failed", err);
+    process.exit(1);
   });
-});

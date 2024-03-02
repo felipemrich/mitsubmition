@@ -27,9 +27,6 @@ export async function connectDB() {
   }
 }
 
-// Call connectDB and ensure it resolves before continuing
-connectDB().catch(console.error);
-
 // Check if the database connection is established
 function checkDBConnection() {
   if (!db) {
