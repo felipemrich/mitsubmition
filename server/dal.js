@@ -1,16 +1,12 @@
-// Import necessary MongoDB modules
+// Import necessary modules
 import { MongoClient, ServerApiVersion } from "mongodb";
 
-// MongoDB connection string
-const url =
-  "mongodb+srv://felipeemrichdearaujo:zIfUitx8pCDXhCxI@cluster0.wdpeh8b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const url = process.env.MONGODB_URI;
+let db = null;
+let client = null;
 
-// Global variables to store the MongoDB client and database
-let db;
-let client;
-
-// Async function to connect to MongoDB
-export async function connectDB() {
+// Function to establish a database connection
+const connectDB = async () => {
   try {
     client = new MongoClient(url, {
       useNewUrlParser: true,
@@ -19,27 +15,19 @@ export async function connectDB() {
     });
     await client.connect();
     console.log("Connected successfully to db server");
-    // Assign the database object to 'db'
+    // Specify the name of your database
     db = client.db("myproject2");
   } catch (err) {
     console.error("Error connecting to the database:", err);
     process.exit(1);
   }
-}
+};
 
-// Call connectDB and ensure it resolves before continuing
-connectDB().catch(console.error);
+// Immediately invoke the connectDB function to ensure the database connection is established
+connectDB().catch(console.dir);
 
-// Check if the database connection is established
-function checkDBConnection() {
-  if (!db) {
-    throw new Error("Database connection not established");
-  }
-}
-
-// Database operations
-async function create(name, email, password) {
-  checkDBConnection();
+// Database operation functions
+const create = async (name, email, password) => {
   try {
     const collection = db.collection("users");
     const doc = { name, email, password, balance: 0 };
@@ -49,20 +37,17 @@ async function create(name, email, password) {
     console.error("Error creating user:", err);
     return { success: false, message: "Failed to create user" };
   }
-}
+};
 
-async function find(email) {
-  checkDBConnection();
+const find = async (email) => {
   return await db.collection("users").find({ email }).toArray();
-}
+};
 
-async function findOne(email) {
-  checkDBConnection();
+const findOne = async (email) => {
   return await db.collection("users").findOne({ email });
-}
+};
 
-async function update(email, amount) {
-  checkDBConnection();
+const update = async (email, amount) => {
   const numericAmount = parseFloat(amount);
   return await db
     .collection("users")
@@ -71,14 +56,13 @@ async function update(email, amount) {
       { $inc: { balance: numericAmount } },
       { returnDocument: "after" }
     );
-}
+};
 
-async function all() {
-  checkDBConnection();
+const all = async () => {
   return await db.collection("users").find({}).toArray();
-}
+};
 
-async function getBalance(email) {
+const getBalance = async (email) => {
   try {
     const user = await findOne(email);
     if (user) {
@@ -90,9 +74,9 @@ async function getBalance(email) {
     console.error("Error getting balance:", err);
     return { success: false, message: "Failed to get balance" };
   }
-}
+};
 
-async function transfer(senderEmail, recipientEmail, amount) {
+const transfer = async (senderEmail, recipientEmail, amount) => {
   const numericAmount = parseFloat(amount);
   const session = client.startSession();
   try {
@@ -120,7 +104,6 @@ async function transfer(senderEmail, recipientEmail, amount) {
   } finally {
     session.endSession();
   }
-}
+};
 
-// Export the database operation functions
 export { create, findOne, find, update, all, getBalance, transfer };
