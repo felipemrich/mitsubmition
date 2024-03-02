@@ -1,7 +1,7 @@
+// Import necessary modules
 import { MongoClient, ServerApiVersion } from "mongodb";
 
-const url =
-  "mongodb+srv://felipeemrichdearaujo:dwWlvVBNjBVDISHg@cluster0.wdpeh8b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const url = process.env.MONGODB_URI;
 let db = null;
 let client = null;
 
