@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 
 // Fallback route for SPA - Serve index.html for any unhandled routes
 app.get("*", (req, res) => {
-  res.sendFile(join(__dirname, "build", "index.html")); // Ensure this path points to your build output directory
+  res.sendFile(join(__dirname, "../build", "index.html")); // Ensure this path points to your build output directory
 });
 
 // Global error handler
