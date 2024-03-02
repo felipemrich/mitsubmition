@@ -10,7 +10,7 @@ function CreateAccount() {
 
   const handleCreateAccount = async () => {
     try {
-      const url = `http://10.244.13.28:4000/account/create/${name}/${email}/${password}`;
+      const url = `http://localhost:4000/account/create/${name}/${email}/${password}`;
       const res = await fetch(url);
       const data = await res.json();
 

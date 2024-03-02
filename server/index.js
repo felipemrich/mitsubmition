@@ -20,12 +20,7 @@ const swaggerDocument = YAML.parse(
 const app = express();
 const port_server = process.env.PORT || 4000; // Default port to 4000 if PORT env var is not set
 
-// CORS options - Adjust the origin as per your requirement
-const corsOptions = {
-  origin: "https://walrus-app-cb2fc.ondigitalocean.app", // Replace with your front-end app's origin
-};
-
-app.use(cors(corsOptions)); // Use CORS with the specified options
+app.use(cors()); // Use CORS with the specified options
 app.use(express.static(join(__dirname, "build"))); // Adjust static middleware to serve from the build path
 
 // Serve Swagger documentation
