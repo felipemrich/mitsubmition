@@ -43,7 +43,7 @@ function TransferFunds() {
       setUserEmail(userEmailFromLocalStorage);
 
       fetch(
-        `http://localhost:4000/account/balance/${encodeURIComponent(
+        `https://walrus-app-cb2fc.ondigitalocean.appaccount/balance/${encodeURIComponent(
           userEmailFromLocalStorage
         )}`
       )
