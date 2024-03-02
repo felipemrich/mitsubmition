@@ -21,7 +21,7 @@ const swaggerDocument = YAML.parse(
 );
 
 const app = express();
-const port_server = process.env.PORT || 3000; // Default to port 3000 if not specified
+const port_server = process.env.PORT || 4000; // Default to port 3000 if not specified
 
 // Adjust static middleware to serve from the correct path
 app.use(express.static(join(__dirname, "build")));
