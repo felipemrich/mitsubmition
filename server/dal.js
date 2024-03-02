@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 const url =
-  "MONGODB_URI=mongodb+srv://felipeemrichdearaujo:dwWlvVBNjBVDISHg@cluster0.wdpeh8b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://felipeemrichdearaujo:dwWlvVBNjBVDISHg@cluster0.wdpeh8b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 let db = null;
 
 // Function to establish a database connection
