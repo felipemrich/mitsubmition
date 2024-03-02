@@ -43,7 +43,7 @@ function TransferFunds() {
       setUserEmail(userEmailFromLocalStorage);
 
       fetch(
-        `https://walrus-app-cb2fc.ondigitalocean.appaccount/balance/${encodeURIComponent(
+        `https://walrus-app-cb2fc.ondigitalocean.app/account/balance/${encodeURIComponent(
           userEmailFromLocalStorage
         )}`
       )
@@ -76,7 +76,7 @@ function TransferFunds() {
   const handleTransfer = () => {
     if (balance >= parseFloat(amount)) {
       fetch(
-        `http://localhost:4000/account/transfer/${localStorage.getItem(
+        `https://walrus-app-cb2fc.ondigitalocean.app/account/transfer/${localStorage.getItem(
           "userEmail"
         )}/${recipientEmail}/${amount}`
       )
