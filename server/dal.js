@@ -6,7 +6,7 @@ let db = null;
 let client = null;
 
 // Function to establish a database connection
-const connectDB = async () => {
+export const connectDB = async () => {
   try {
     client = new MongoClient(url, {
       useNewUrlParser: true,
