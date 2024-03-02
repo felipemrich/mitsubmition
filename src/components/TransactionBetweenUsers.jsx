@@ -14,7 +14,7 @@ function TransferFunds() {
     const userEmailFromLocalStorage = localStorage.getItem("userEmail");
     if (userEmailFromLocalStorage) {
       fetch(
-        `http://localhost:4000/account/balance/${encodeURIComponent(
+        `https://walrus-app-cb2fc.ondigitalocean.app/account/balance/${encodeURIComponent(
           userEmailFromLocalStorage
         )}`
       )

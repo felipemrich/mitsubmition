@@ -19,7 +19,9 @@ function Transaction() {
     const userEmail = localStorage.getItem("userEmail");
     if (userEmail) {
       fetch(
-        `http://localhost:4000/account/balance/${encodeURIComponent(userEmail)}`
+        `https://walrus-app-cb2fc.ondigitalocean.app/account/balance/${encodeURIComponent(
+          userEmail
+        )}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -65,7 +67,7 @@ function Transaction() {
       transactionAmount = -transactionAmount; // Make the amount negative for withdrawal
     }
     const encodedEmail = encodeURIComponent(userEmail);
-    const url = `http://localhost:4000/account/update/${encodedEmail}/${transactionAmount}`;
+    const url = `https://walrus-app-cb2fc.ondigitalocean.app/account/update/${encodedEmail}/${transactionAmount}`;
 
     fetch(url)
       .then((response) => response.json())

@@ -10,7 +10,9 @@ function Balance() {
     const userEmail = localStorage.getItem("userEmail");
     if (userEmail) {
       fetch(
-        `http://localhost:4000/account/balance/${encodeURIComponent(userEmail)}`
+        `https://walrus-app-cb2fc.ondigitalocean.app/account/balance/${encodeURIComponent(
+          userEmail
+        )}`
       )
         .then((response) => {
           if (!response.ok) {

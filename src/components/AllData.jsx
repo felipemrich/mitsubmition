@@ -10,7 +10,9 @@ function AllData() {
     const userEmail = localStorage.getItem("userEmail");
     if (userEmail) {
       fetch(
-        `http://localhost:4000/account/find/${encodeURIComponent(userEmail)}`
+        `https://walrus-app-cb2fc.ondigitalocean.app/account/find/${encodeURIComponent(
+          userEmail
+        )}`
       )
         .then((response) => {
           if (!response.ok) {
