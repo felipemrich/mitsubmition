@@ -1,10 +1,7 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-import dotenv from "dotenv";
 
-// Load environment variables
-dotenv.config();
-
-const url = process.env.MONGODB_URI;
+const url =
+  "mongodb+srv://felipeemrichdearaujo:dwWlvVBNjBVDISHg@cluster0.wdpeh8b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 let db = null;
 let client = null;
 
