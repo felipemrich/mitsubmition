@@ -1,0 +1,285 @@
+openapi: 3.0.0
+info:
+  title: Account Management API
+  description: This API is used for managing user accounts, including creating accounts, logging in, finding users, updating accounts, and transferring funds.
+  version: "1.0.0"
+servers:
+  - url: http://localhost:4000/account
+paths:
+  /create/{name}/{email}/{password}:
+    get:
+      summary: Create a new user account
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: password
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User created successfully or user already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      balance:
+                        type: number
+                    required:
+                      - name
+                      - email
+                      - password
+                      - balance
+        "500":
+          description: Internal Server Error
+
+  /login/{email}/{password}:
+    get:
+      summary: Login a user
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: password
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Login successful or failed (wrong password or user not found)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      balance:
+                        type: number
+                    required:
+                      - name
+                      - email
+                      - password
+                      - balance
+        "500":
+          description: Internal Server Error
+
+  /find/{email}:
+    get:
+      summary: Find user accounts by email
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User accounts found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        balance:
+                          type: number
+        "500":
+          description: Internal Server Error
+
+  /findOne/{email}:
+    get:
+      summary: Find one user account by email
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User account found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      balance:
+                        type: number
+        "500":
+          description: Internal Server Error
+
+  /update/{email}/{amount}:
+    get:
+      summary: Update the account balance
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: amount
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Account balance updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      balance:
+                        type: number
+        "500":
+          description: Internal Server Error
+
+  /balance/{email}:
+    get:
+      summary: Get user balance
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User balance fetched
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  balance:
+                    type: number
+        "500":
+          description: Internal Server Error
+
+  /all:
+    get:
+      summary: Get all user accounts
+      responses:
+        "200":
+          description: All user accounts fetched
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        balance:
+                          type: number
+        "500":
+          description: Internal Server Error
+
+  /transfer/{senderEmail}/{recipientEmail}/{amount}:
+    get:
+      summary: Transfer balance between two accounts
+      parameters:
+        - in: path
+          name: senderEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: recipientEmail
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: amount
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Transfer successful or failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        "500":
+          description: Internal Server Error
